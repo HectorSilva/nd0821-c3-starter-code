@@ -1,2 +1,4 @@
+[core]
+    remote = s3remote
 ['remote "s3remote"']
-    url = https://ml-prod-bucket.s3.us-west-2.amazonaws.com
+    url = s3://ml-prod-bucket
