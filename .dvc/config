@@ -1,0 +1,2 @@
+['remote "s3remote"']
+    url = https://ml-prod-bucket.s3.us-west-2.amazonaws.com
