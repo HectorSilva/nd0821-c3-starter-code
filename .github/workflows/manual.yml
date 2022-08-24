@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
   push:
-    branches: [main]
+    branches: [dev]
 
 jobs:
   test-transition-issue:
@@ -18,16 +18,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Configure AWS Credentials"
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-west-2
 
       - name: Checkout
       - uses: actions/checkout@v2
 
-      - name: Set up Python 2.8.12
-        uses: actions/setup-python@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.8.12
+          python-version: 3.10.0
 
       - name: Install dependencies
         run: |
