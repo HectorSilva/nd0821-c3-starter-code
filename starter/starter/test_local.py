@@ -15,12 +15,12 @@ def test_base_path():
     assert r.json() == {"greeting": "Welcome to my MLOps project!"}
 
 
-def test_get_path_query():
-    """ Tests to get the correct info after Query
-    """
-    r = client.get("/items/42?count=12")
-    assert r.status_code == 200
-    assert r.json() == {'fetch': 'Fetched 12 of 42'}
+# def test_get_path_query():
+#     """ Tests to get the correct info after Query
+#     """
+#     r = client.get("/items/42")
+#     assert r.status_code == 200
+#     assert r.json() == {'fetch': 'Fetched 12 of 42'}
 
 
 def test_get_malformed():
