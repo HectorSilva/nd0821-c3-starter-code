@@ -2,7 +2,7 @@ name: API Deployment workflow
 
 # Controls when the action will run.
 on:
-  #workflow_dispatch:
+  workflow_dispatch:
   push:
 
 jobs:
