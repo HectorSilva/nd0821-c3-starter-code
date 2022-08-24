@@ -15,7 +15,7 @@ print(f'Current directory { os.getcwd() }')
 sys.path.insert(1, '../data/')
 # Add code to load in the data.
 data = pd.read_csv(
-    '~/Documents/Udacity/Module3/nd0821-c3-starter-code/starter/data/census.csv')
+    f'{os.getcwd()}/../data/census.csv')
 
 # Optional enhancement, use K-fold cross validation instead of a
 # train-test split.
