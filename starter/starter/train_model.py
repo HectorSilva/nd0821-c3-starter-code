@@ -48,7 +48,7 @@ filename = 'trained_model.sav'
 
 print(os.getcwd())
 
-with open('model/' + filename, 'wb') as file:
+with open('../model/' + filename, 'wb') as file:
     pickle.dump(model, file)
 
 print('Finished')
