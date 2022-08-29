@@ -1,0 +1,4 @@
+outs:
+- md5: 29c1c36d69f0f3dbd66486219688ea9f
+  size: 17366383
+  path: trained_model.sav

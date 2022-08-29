@@ -1,10 +1,9 @@
-from os import path
-
 import argparse
 import importlib
 import inspect
 import os
 import sys
+from os import path
 
 FAIL_COLOR = '\033[91m'
 OK_COLOR = '\033[92m'
@@ -12,8 +11,7 @@ WARN_COLOR = '\033[93m'
 
 
 def run_sanity_check(test_dir):
-
-    #assert path.isdir(test_dir), FAIL_COLOR+f"No direcotry named {test_dir} found in {os.getcwd()}"
+    assert path.isdir(test_dir), FAIL_COLOR + f"No direcotry named {test_dir} found in {os.getcwd()}"
     print('This script will perform a sanity test to ensure your code meets the criteria in the rubric.\n')
     print('Please enter the path to the file that contains your test cases for the GET() and POST() methods')
     print('The path should be something like abc/def/test_xyz.py')
@@ -137,12 +135,12 @@ def run_sanity_check(test_dir):
                 FAIL_COLOR +
                 "You do not seem to have TWO separate test cases, one for each possible prediction that your model can make.")
 
-    SANITY_TEST_PASSING = SANITY_TEST_PASSING and\
-        TEST_FOR_GET_METHOD_RESPONSE_CODE and \
-        TEST_FOR_GET_METHOD_RESPONSE_BODY and \
-        TEST_FOR_POST_METHOD_RESPONSE_CODE and \
-        TEST_FOR_POST_METHOD_RESPONSE_BODY and \
-        COUNT_POST_METHOD_TEST_FOR_INFERENCE_RESULT >= 2
+    SANITY_TEST_PASSING = SANITY_TEST_PASSING and \
+                          TEST_FOR_GET_METHOD_RESPONSE_CODE and \
+                          TEST_FOR_GET_METHOD_RESPONSE_BODY and \
+                          TEST_FOR_POST_METHOD_RESPONSE_CODE and \
+                          TEST_FOR_POST_METHOD_RESPONSE_BODY and \
+                          COUNT_POST_METHOD_TEST_FOR_INFERENCE_RESULT >= 2
 
     if SANITY_TEST_PASSING:
         print(OK_COLOR + "Your test cases look good!")
