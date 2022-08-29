@@ -6,4 +6,5 @@ requests
 fastapi==0.63.0
 uvicorn
 gunicorn
-flake8
+flake8==5.0.4
+pytest==6.2.2

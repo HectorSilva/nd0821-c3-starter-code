@@ -1,8 +1,4 @@
-from pandas.core.frame import DataFrame
-import numpy as np
 from sklearn.metrics import fbeta_score, precision_score, recall_score
-from sklearn.naive_bayes import GaussianNB
-from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 

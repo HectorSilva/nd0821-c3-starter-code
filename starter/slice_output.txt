@@ -1,0 +1,56 @@
+**************************************************
+Results for Divorced:
+	Precision recall curve:
+		precision 0.2408095574460244 0.7872527472527473 1.0
+		Recall 1.0 0.6852442290524168
+		Thresholds [0 1] 
+	f1 score 0.7327151234147007
+	Recall score 0.6852442290524168
+**************************************************
+Results for Married-AF-spouse:
+	Precision recall curve:
+		precision 0.2408095574460244 0.7872527472527473 1.0
+		Recall 1.0 0.6852442290524168
+		Thresholds [0 1] 
+	f1 score 0.7327151234147007
+	Recall score 0.6852442290524168
+**************************************************
+Results for Married-civ-spouse:
+	Precision recall curve:
+		precision 0.2408095574460244 0.7872527472527473 1.0
+		Recall 1.0 0.6852442290524168
+		Thresholds [0 1] 
+	f1 score 0.7327151234147007
+	Recall score 0.6852442290524168
+**************************************************
+Results for Married-spouse-absent:
+	Precision recall curve:
+		precision 0.2408095574460244 0.7872527472527473 1.0
+		Recall 1.0 0.6852442290524168
+		Thresholds [0 1] 
+	f1 score 0.7327151234147007
+	Recall score 0.6852442290524168
+**************************************************
+Results for Never-married:
+	Precision recall curve:
+		precision 0.2408095574460244 0.7872527472527473 1.0
+		Recall 1.0 0.6852442290524168
+		Thresholds [0 1] 
+	f1 score 0.7327151234147007
+	Recall score 0.6852442290524168
+**************************************************
+Results for Separated:
+	Precision recall curve:
+		precision 0.2408095574460244 0.7872527472527473 1.0
+		Recall 1.0 0.6852442290524168
+		Thresholds [0 1] 
+	f1 score 0.7327151234147007
+	Recall score 0.6852442290524168
+**************************************************
+Results for Widowed:
+	Precision recall curve:
+		precision 0.2408095574460244 0.7872527472527473 1.0
+		Recall 1.0 0.6852442290524168
+		Thresholds [0 1] 
+	f1 score 0.7327151234147007
+	Recall score 0.6852442290524168
