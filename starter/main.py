@@ -6,11 +6,10 @@ import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 from pydantic.fields import Field
-
-from starter.constants import CAT_FEATURES
-from starter.ml.data import process_data
-from starter.ml.model import inference
-from starter.train_model import get_artifact
+from starter.starter.constants import CAT_FEATURES
+from starter.starter.ml.data import process_data
+from starter.starter.ml.model import inference
+from starter.starter.train_model import get_artifact
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
