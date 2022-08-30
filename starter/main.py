@@ -1,5 +1,6 @@
 # Put the code for your API here.
 import os
+import time
 
 import pandas as pd
 import uvicorn
@@ -13,8 +14,13 @@ from starter.starter.train_model import get_artifact
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
-    if os.system("dvc pull") != 0:
+    i = 0
+    while os.system("dvc pull") != 0 and i < 20:
         exit("dvc pull failed")
+        os.system("Retrying in 5 secs")
+        i += 1
+        time.sleep(5)
+
     os.system("rm -r .dvc .apt/usr/lib/dvc")
 
 app = FastAPI()
