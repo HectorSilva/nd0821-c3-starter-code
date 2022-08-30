@@ -23,6 +23,7 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
         ["dvc", "pull"], capture_output=True, text=True)
     while dvc_output.returncode != 0 and i < 5:
         print(f'Wokring directory: {os.getcwd()}')
+        os.chdir('starter')
         print(f'LS: {os.listdir()}')
         dvc_output = subprocess.run(
             ["dvc", "pull"], capture_output=True, text=True)
@@ -30,6 +31,7 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
         print(f'Error code: {dvc_output.returncode}')
         print(f'ST output: {dvc_output.stdout}')
         time.sleep(3)
+        i += 1
     if i == 5:
         exit("dvc pull failed")
     os.system("rm -r .dvc .apt/usr/lib/dvc")
