@@ -13,10 +13,12 @@ from starter.starter.ml.data import process_data
 from starter.starter.ml.model import inference
 from starter.starter.train_model import get_artifact
 
+app = FastAPI()
+
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     i = 0
-    time.sleep(2)
+    time.sleep(5)
     dvc_output = subprocess.run(
         ["dvc", "pull"], capture_output=True, text=True)
     while dvc_output.returncode != 0 and i < 5:
@@ -30,9 +32,7 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
         time.sleep(3)
     if i == 5:
         exit("dvc pull failed")
-    # os.system("rm -r .dvc .apt/usr/lib/dvc")
-
-app = FastAPI()
+    os.system("rm -r .dvc .apt/usr/lib/dvc")
 
 model_dir = '../model'
 model = get_artifact(model_dir, 'trained_model.sav')
