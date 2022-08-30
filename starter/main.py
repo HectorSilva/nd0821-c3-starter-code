@@ -35,7 +35,7 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
         i += 1
     if i == 5:
         exit("dvc pull failed")
-    os.system("rm -r .dvc .apt/usr/lib/dvc")
+    os.system("rm -r .dvc ../.apt/usr/lib/dvc")
 
 model_dir = '../model'
 model = get_artifact(model_dir, 'trained_model.sav')
