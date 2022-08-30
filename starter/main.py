@@ -24,17 +24,22 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     # lock = os.system('rm -r .dvc .dvc/tmp/lock')
     # print(f'Lock info {lock}, lock type {type(lock)}')
 
-    status_code = os.system("dvc pull -r s3remote")
-    if status_code != 0:
-        print(type(status_code), status_code)
-        print(f'Wokring directory: {os.getcwd()}')
-        print(f'LS: {os.listdir()}')
+    try:
+        status_code = os.system("dvc pull -r s3remote")
+        if status_code != 0:
+            print(type(status_code), status_code)
+            print(f'Wokring directory: {os.getcwd()}')
+            print(f'LS: {os.listdir()}')
+            exit("dvc pull failed")
+    except:
+        print('Error trying to pull the data, trying again')
         dvc_output = subprocess.run(
             ["dvc", "pull"], capture_output=True, text=True)
         print(f'Std errors: {dvc_output.stderr}')
         print(f'Error code: {dvc_output.returncode}')
         print(f'ST output: {dvc_output.stdout}')
-        exit("dvc pull failed")
+        if (dvc_output.returncode != 0):
+            exit("dvc pull failed")
     # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
 
 model_dir = '../model'
