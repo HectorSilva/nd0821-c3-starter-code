@@ -19,11 +19,10 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     i = 0
     time.sleep(5)
-    if os.getcwd() != 'starter':
-        os.chdir('starter')
-    dvc_output = subprocess.run(
-        ["dvc", "pull"], capture_output=True, text=True)
-    while dvc_output.returncode != 0 and i < 5:
+    # if os.getcwd() != 'starter':
+    #    os.chdir('starter')
+
+    if os.system("dvc pull -r s3remote") != 0:
         print(f'Wokring directory: {os.getcwd()}')
         print(f'LS: {os.listdir()}')
         dvc_output = subprocess.run(
@@ -31,9 +30,6 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
         print(f'Std errors: {dvc_output.stderr}')
         print(f'Error code: {dvc_output.returncode}')
         print(f'ST output: {dvc_output.stdout}')
-        time.sleep(3)
-        i += 1
-    if i == 5:
         exit("dvc pull failed")
     # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
 
