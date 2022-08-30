@@ -21,8 +21,9 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     time.sleep(5)
     # if os.getcwd() != 'starter':
     #    os.chdir('starter')
-
-    if os.system("dvc pull -r s3remote") != 0:
+    status_code = os.system("dvc pull -r s3remote")
+    if status_code != 0:
+        print(type(status_code), status_code)
         print(f'Wokring directory: {os.getcwd()}')
         print(f'LS: {os.listdir()}')
         dvc_output = subprocess.run(
