@@ -42,7 +42,20 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
             exit("dvc pull failed")
     # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
 
-model_dir = '../model'
+
+def list_files(startpath):
+    for root, dirs, files in os.walk(startpath):
+        level = root.replace(startpath, '').count(os.sep)
+        indent = ' ' * 4 * (level)
+        print('{}{}/'.format(indent, os.path.basename(root)))
+        subindent = ' ' * 4 * (level + 1)
+        for f in files:
+            print('{}{}'.format(subindent, f))
+
+
+list_files(os.getcwd())
+abs_path = os.path.abspath(os.path.dirname(__file__))
+model_dir = pd.read_csv(os.path.join(abs_path, 'model'))
 model = get_artifact(model_dir, 'trained_model.sav')
 encoder = get_artifact(model_dir, 'onehot_encoder.sav')
 lb = get_artifact(model_dir, 'lb.sav')
