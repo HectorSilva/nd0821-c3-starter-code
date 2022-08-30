@@ -1,5 +1,6 @@
 # Put the code for your API here.
 import os
+import subprocess
 import time
 
 import pandas as pd
@@ -15,7 +16,11 @@ from starter.starter.train_model import get_artifact
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     i = 0
-    while os.system("dvc pull") != 0 and i < 20:
+    dvc_output = subprocess.run(
+        ["dvc", "pull"], capture_output=True, text=True)
+    os.system(dvc_output.stderr)
+    os.system(dvc_output.stdout)
+    while dvc_output.stderr != 0 and i < 20:
         exit("dvc pull failed")
         os.system("Retrying in 5 secs")
         i += 1
