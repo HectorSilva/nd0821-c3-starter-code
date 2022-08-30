@@ -18,9 +18,14 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     i = 0
     dvc_output = subprocess.run(
         ["dvc", "pull"], capture_output=True, text=True)
-    os.system(dvc_output.stderr)
-    os.system(dvc_output.stdout)
+    print(dvc_output.stderr)
+    print(dvc_output.stdout)
     while dvc_output.stderr != 0 and i < 20:
+        dvc_output = subprocess.run(
+            ["dvc", "pull"], capture_output=True, text=True)
+        print(dvc_output.stderr)
+        print(dvc_output.stdout)
+
         exit("dvc pull failed")
         os.system("Retrying in 5 secs")
         i += 1
