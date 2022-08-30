@@ -17,8 +17,8 @@ app = FastAPI()
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
-    i = 0
-    time.sleep(5)
+    os.system("dvc config core.hardlink_lock true")
+    time.sleep(20)
     # if os.getcwd() != 'starter':
     #    os.chdir('starter')
     status_code = os.system("dvc pull -r s3remote")
