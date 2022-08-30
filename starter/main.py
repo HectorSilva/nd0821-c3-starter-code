@@ -19,6 +19,8 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     i = 0
     time.sleep(5)
+    if os.getcwd() != 'starter':
+        os.chdir('starter')
     dvc_output = subprocess.run(
         ["dvc", "pull"], capture_output=True, text=True)
     while dvc_output.returncode != 0 and i < 5:
