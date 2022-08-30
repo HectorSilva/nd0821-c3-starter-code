@@ -1,7 +1,6 @@
 # Put the code for your API here.
 import os
 import subprocess
-import time
 
 import pandas as pd
 import uvicorn
@@ -18,19 +17,16 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     i = 0
     dvc_output = subprocess.run(
         ["dvc", "pull"], capture_output=True, text=True)
-    while dvc_output.returncode != 0 and i < 20:
+    if dvc_output.returncode != 0 and i < 20:
+        print(f'Wokring directory: {os.getcwd()}')
+        print(f'LS: {os.listdir()}')
         dvc_output = subprocess.run(
             ["dvc", "pull"], capture_output=True, text=True)
         print(f'Std errors: {dvc_output.stderr}')
         print(f'Error code: {dvc_output.returncode}')
         print(f'ST output: {dvc_output.stdout}')
-        print("Retrying in 5 secs")
-        i += 1
-        time.sleep(5)
-    if i == 20:
         exit("dvc pull failed")
-    else:
-        os.system("rm -r .dvc .apt/usr/lib/dvc")
+    os.system("rm -r .dvc .apt/usr/lib/dvc")
 
 app = FastAPI()
 
