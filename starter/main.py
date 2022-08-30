@@ -31,7 +31,8 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
             print(f'Wokring directory: {os.getcwd()}')
             print(f'LS: {os.listdir()}')
             exit("dvc pull failed")
-    except:
+    except Exception as e:
+        print(f'Error {e}')
         print('Error trying to pull the data, trying again')
         dvc_output = subprocess.run(
             ["dvc", "pull"], capture_output=True, text=True)
