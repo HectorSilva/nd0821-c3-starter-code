@@ -8,3 +8,11 @@ uvicorn==0.16.0
 gunicorn==19.10.0
 flake8==5.0.4
 pytest==6.2.2
+dvc==2.21.2
+dvc-data==0.1.23
+dvc-http==2.19.0
+dvc-objects==0.1.16
+dvc-render==0.0.9
+dvc-s3==2.19.0
+dvc-task==0.1.2
+dvclive==0.10.0

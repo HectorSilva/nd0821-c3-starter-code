@@ -1,6 +1,6 @@
 [core]
     remote = s3remote
     autostage = true
-    hardlink_lock = true
+    hardlink_lock = false
 ['remote "s3remote"']
     url = s3://ml-prod-bucket/storage
