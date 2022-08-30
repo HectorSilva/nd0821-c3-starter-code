@@ -30,7 +30,6 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
             print(type(status_code), status_code)
             print(f'Wokring directory: {os.getcwd()}')
             print(f'LS: {os.listdir()}')
-            exit("dvc pull failed")
     except Exception as e:
         print(f'Error {e}')
         print('Error trying to pull the data, trying again')
