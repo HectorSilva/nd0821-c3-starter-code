@@ -15,33 +15,41 @@ from starter.starter.train_model import get_artifact
 app = FastAPI()
 
 
-def list_files(startpath):
+def list_files(startpath, pattern=None):
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
         indent = '-' * 4 * (level)
         print('{}{}/'.format(indent, os.path.basename(root)))
         subindent = '-' * 4 * (level + 1)
         for f in files:
-            print('{}{}'.format(subindent, f))
+            if pattern is not None:
+                if pattern in f:
+                    print('{}{}'.format(subindent, f))
+            else:
+                print('{}{}'.format(subindent, f))
 
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     os.system("dvc config core.hardlink_lock true")
 
+    list_files(os.getcwd(), 'lock')
+
     if 'starter' not in os.getcwd():
         print(f'Working dir {os.getcwd()}', os.listdir('.'))
-        print(f'Working dir {os.getcwd()}', list_files('.dvc'))
+        print(f'DVC dir {os.getcwd()}', list_files('.dvc'))
         os.chdir('starter')
         print(f'Changed to {os.getcwd()} directory')
     else:
         print('Already in starter directory')
 
-    if os.path.exists("../.dvc/tmp/lock") or os.path.exists("../.dvc/tmp/rwlock"):
+    if os.path.exists("../.dvc/tmp/lock"):
         lock = os.system('rm ../.dvc/tmp/lock')
-        rwlock = os.system('rm ../.dvc/tmp/rwlock.lock')
         print('The lock files have been deleted')
-    else:
+    if os.path.exists("../.dvc/tmp/rwlock"):
+        rwlock = os.system('rm ../.dvc/tmp/rwlock')
+        print('The rwlock file has been deleted')
+    if not (os.path.exists("../.dvc/tmp/lock") and os.path.exists("../.dvc/tmp/rwlock")):
         print(f'Working dir {os.getcwd()}', os.listdir('.'))
         print('Lock not found')
 
