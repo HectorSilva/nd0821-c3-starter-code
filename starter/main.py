@@ -8,16 +8,13 @@ import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 from pydantic.fields import Field
-from starter.starter.constants import CAT_FEATURES
-from starter.starter.ml.data import process_data
-from starter.starter.ml.model import inference
-from starter.starter.train_model import get_artifact
+
+from starter.constants import CAT_FEATURES
+from starter.ml.data import process_data
+from starter.ml.model import inference
+from starter.train_model import get_artifact
 
 app = FastAPI()
-
-if os.getcwd() != 'starter':
-    os.chdir('starter')
-    print(f'Changed to {os.getcwd()} directory')
 
 
 def list_files(startpath):
@@ -34,27 +31,36 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     os.system("dvc config core.hardlink_lock true")
 
-    print('************** BEGINNING OF LISTING FILES *****************')
-    list_files(os.getcwd())
-    print('************** END OF LISTING FILES ***********************')
-
-    if os.path.exists(".dvc/tmp/lock"):
-        print('The lock file has been deleted')
-        lock = os.system('rm -r .dvc .dvc/tmp/lock')
-    else:
-        print('Lock not found')
-
-    status_code = -1
-
-    if os.getcwd() != 'starter':
+    if 'starter' not in os.getcwd():
+        print(f'Working dir {os.getcwd()}', os.listdir('.'))
         os.chdir('starter')
         print(f'Changed to {os.getcwd()} directory')
-        status_code = subprocess.call(
-            ["dvc", "pull", "-vvv"], timeout=60)
     else:
-        print(f'No change of directory, running dvc process, curr working dir {os.getcwd()}')
-        status_code = subprocess.call(
-            ["dvc", "pull", "-vvv"], timeout=60)
+        print('Already in starter directory')
+
+    if os.path.exists("../.dvc/tmp/lock") or os.path.exists("../.dvc/tmp/rwlock"):
+        lock = os.system('rm ../.dvc/tmp/lock')
+        rwlock = os.system('rm ../.dvc/tmp/rwlock.lock')
+        print('The lock files have been deleted')
+    else:
+        print(f'Working dir {os.getcwd()}', os.listdir('.'))
+        print('Lock not found')
+
+# print('************** BEGINNING OF LISTING FILES *****************')
+# list_files(os.getcwd())
+# print('************** END OF LISTING FILES ***********************')
+
+status_code = -1
+
+if 'starter' not in os.getcwd() and os.path.isdir('starter'):
+    os.chdir('starter')
+    print(f'Changed to {os.getcwd()} directory')
+    status_code = subprocess.call(
+        ["dvc", "pull", "-r", "s3remote", "-vvv"], timeout=60)
+else:
+    print(f'No change of directory, running dvc process, curr working dir {os.getcwd()}')
+    status_code = subprocess.call(
+        ["dvc", "pull", "-r", "s3remote", "-vvv"], timeout=60)
     # print(f'Lock info {lock}, lock type {type(lock)}')
 
     # status_code = os.system("dvc pull -r s3remote", )
