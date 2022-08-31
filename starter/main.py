@@ -32,6 +32,7 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
 
     if 'starter' not in os.getcwd():
         print(f'Working dir {os.getcwd()}', os.listdir('.'))
+        print(f'Working dir {os.getcwd()}', list_files('.dvc'))
         os.chdir('starter')
         print(f'Changed to {os.getcwd()} directory')
     else:
@@ -45,36 +46,36 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
         print(f'Working dir {os.getcwd()}', os.listdir('.'))
         print('Lock not found')
 
-# print('************** BEGINNING OF LISTING FILES *****************')
-# list_files(os.getcwd())
-# print('************** END OF LISTING FILES ***********************')
+    # print('************** BEGINNING OF LISTING FILES *****************')
+    # list_files(os.getcwd())
+    # print('************** END OF LISTING FILES ***********************')
 
-status_code = -1
+    status_code = -1
 
-if 'starter' not in os.getcwd() and os.path.isdir('starter'):
-    os.chdir('starter')
-    print(f'Changed to {os.getcwd()} directory')
-    status_code = subprocess.call(
-        ["dvc", "pull", "-r", "s3remote", "-vvv"], timeout=60)
-else:
-    print(f'No change of directory, running dvc process, curr working dir {os.getcwd()}')
-    status_code = subprocess.call(
-        ["dvc", "pull", "-r", "s3remote", "-vvv"], timeout=60)
-    # print(f'Lock info {lock}, lock type {type(lock)}')
+    if 'starter' not in os.getcwd() and os.path.isdir('starter'):
+        os.chdir('starter')
+        print(f'Changed to {os.getcwd()} directory')
+        status_code = subprocess.call(
+            ["dvc", "pull", "-r", "s3remote"], timeout=60)
+    else:
+        print(f'No change of directory, running dvc process, curr working dir {os.getcwd()}')
+        status_code = subprocess.call(
+            ["dvc", "pull", "-r", "s3remote"], timeout=60)
+        # print(f'Lock info {lock}, lock type {type(lock)}')
 
-    # status_code = os.system("dvc pull -r s3remote", )
+        # status_code = os.system("dvc pull -r s3remote", )
 
-    if status_code != 0:
-        print(type(status_code), status_code)
-        print(f'Wokring directory: {os.getcwd()}')
-        print('Error trying to pull the data, trying again')
-        time.sleep(10)
-        # print(f'Std errors: {dvc_output.stderr}')
-        # print(f'Error code: {dvc_output.returncode}')
-        # print(f'ST output: {dvc_output.stdout}')
-        # exit("dvc pull failed")
+        if status_code != 0:
+            print(type(status_code), status_code)
+            print(f'Wokring directory: {os.getcwd()}')
+            print('Error trying to pull the data, trying again')
+            time.sleep(10)
+            # print(f'Std errors: {dvc_output.stderr}')
+            # print(f'Error code: {dvc_output.returncode}')
+            # print(f'ST output: {dvc_output.stdout}')
+            # exit("dvc pull failed")
 
-    # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
+        # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
 
 abs_path = os.path.abspath(os.path.dirname(__file__))
 model_dir = os.path.join(abs_path, 'model')
