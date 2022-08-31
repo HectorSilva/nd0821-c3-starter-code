@@ -99,14 +99,14 @@ def save_artifact(artifact, model_dir: str, file_name: str):
         pickle.dump(artifact, file)
 
 
-def get_artifact(dir_name: str, artifact_name: str) -> Any:
+def get_artifact(path: str, artifact_name: str) -> Any:
     """
     The get_artifact function loads in the artifact from a file.
 
-    :param dir_name:str: Specify the directory where the artifact is located
+    :param path:str: Specify the path where the artifact is located
     :param artifact_name:str: Specify the name of the artifact to be loaded
     :return: A file object
     """
     # Add code to load in the artifact.
-    artifact = joblib.load(open(f'{abs_path}/{dir_name}/{artifact_name}', 'r+b'))
+    artifact = joblib.load(open(f'{path}/{artifact_name}', 'r+b'))
     return artifact
