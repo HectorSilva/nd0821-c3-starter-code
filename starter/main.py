@@ -1,7 +1,10 @@
 # Put the code for your API here.
 import os
 import subprocess
+import sys
 
+sys.path.append('../')
+sys.path.insert(1, './starter')
 import pandas as pd
 import uvicorn
 from fastapi import FastAPI
