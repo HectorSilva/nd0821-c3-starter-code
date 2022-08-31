@@ -15,32 +15,6 @@ from starter.starter.train_model import get_artifact
 
 app = FastAPI()
 
-if "DYNO" in os.environ and os.path.isdir(".dvc"):
-    os.system("dvc config core.no_scm true")
-    os.system("dvc config core.hardlink_lock true")
-
-    if os.getcwd() != 'starter':
-        os.chdir('starter')
-    # lock = os.system('rm -r .dvc .dvc/tmp/lock')
-    # print(f'Lock info {lock}, lock type {type(lock)}')
-
-    # status_code = os.system("dvc pull -r s3remote", )
-    status_code = subprocess.call(
-        ["dvc", "pull"], timeout=60)
-
-    if status_code != 0:
-        print(type(status_code), status_code)
-        print(f'Wokring directory: {os.getcwd()}')
-        print('Error trying to pull the data, trying again')
-
-        # print(f'Std errors: {dvc_output.stderr}')
-        # print(f'Error code: {dvc_output.returncode}')
-        # print(f'ST output: {dvc_output.stdout}')
-        if status_code != 0:
-            # exit("dvc pull failed")
-            time.sleep(10)
-    # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
-
 
 def list_files(startpath):
     for root, dirs, files in os.walk(startpath):
@@ -55,6 +29,36 @@ def list_files(startpath):
 print('************** BEGINNING OF LISTING FILES *****************')
 list_files(os.getcwd())
 print('************** END OF LISTING FILES ***********************')
+
+if "DYNO" in os.environ and os.path.isdir(".dvc"):
+    os.system("dvc config core.no_scm true")
+    os.system("dvc config core.hardlink_lock true")
+
+    if os.path.exists("dvc/tmp/lock"):
+        print('The lock file has been deleted')
+        lock = os.system('rm -r .dvc .dvc/tmp/lock')
+
+    if os.getcwd() != 'starter':
+        os.chdir('starter')
+
+    # print(f'Lock info {lock}, lock type {type(lock)}')
+
+    # status_code = os.system("dvc pull -r s3remote", )
+    status_code = subprocess.call(
+        ["dvc", "pull", "-vvv"], timeout=60)
+
+    if status_code != 0:
+        print(type(status_code), status_code)
+        print(f'Wokring directory: {os.getcwd()}')
+        print('Error trying to pull the data, trying again')
+        time.sleep(10)
+        # print(f'Std errors: {dvc_output.stderr}')
+        # print(f'Error code: {dvc_output.returncode}')
+        # print(f'ST output: {dvc_output.stdout}')
+        # exit("dvc pull failed")
+
+    # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
+
 abs_path = os.path.abspath(os.path.dirname(__file__))
 model_dir = os.path.join(abs_path, 'model')
 model = get_artifact(model_dir, 'trained_model.sav')
