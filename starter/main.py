@@ -1,108 +1,36 @@
 # Put the code for your API here.
 import os
 import subprocess
-from time import sleep
 
 import pandas as pd
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 from pydantic.fields import Field
-from starter.starter.constants import CAT_FEATURES
-from starter.starter.ml.data import process_data
-from starter.starter.ml.model import inference
-from starter.starter.train_model import get_artifact
+
+from starter.constants import CAT_FEATURES
+from starter.ml.data import process_data
+from starter.ml.model import inference
+from starter.train_model import get_artifact
 
 app = FastAPI()
-
-
-def list_files(startpath, pattern=None, delete=False):
-    for root, dirs, files in os.walk(startpath):
-        level = root.replace(startpath, '').count(os.sep)
-        indent = '-' * 4 * (level)
-        print('{}{}/'.format(indent, os.path.basename(root)))
-        subindent = '-' * 4 * (level + 1)
-        for f in files:
-            if pattern is not None:
-                if pattern in f:
-                    if delete:
-                        print('{}{}-----> TO DELETE'.format(subindent, f))
-                        os.remove(os.path.join(root, f))
-                        print(f'{subindent}{f} --> deleted')
-                    else:
-                        print('{}{}'.format(subindent, f))
-
-            else:
-                print('{}{}'.format(subindent, f))
-
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     os.system("dvc config core.hardlink_lock true")
 
-    list_files(os.getcwd(), 'user_id.lock', True)
-
     if 'starter' not in os.getcwd():
-        print(f'Working dir {os.getcwd()}', os.listdir('.'))
-        print(f'DVC dir {os.getcwd()}', list_files('.dvc'))
         os.chdir('starter')
         print(f'Changed to {os.getcwd()} directory')
     else:
         print('Already in starter directory')
-
-    if os.path.exists("../.dvc/tmp/lock"):
-        lock = os.system('rm ../.dvc/tmp/lock')
-        print('The lock files have been deleted')
-    if os.path.exists("../.dvc/tmp/rwlock"):
-        rwlock = os.system('rm ../.dvc/tmp/rwlock')
-        print('The rwlock file has been deleted')
-    if not (os.path.exists("../.dvc/tmp/lock") and os.path.exists("../.dvc/tmp/rwlock")):
-        print(f'Working dir {os.getcwd()}', os.listdir('.'))
-        print('Lock not found')
-
-    # print('************** BEGINNING OF LISTING FILES *****************')
-    # list_files(os.getcwd())
-    # print('************** END OF LISTING FILES ***********************')
-
-    status_code = -1
-
-    if 'starter' not in os.getcwd() and os.path.isdir('starter'):
-        os.chdir('starter')
-        print(f'Changed to {os.getcwd()} directory')
-        try:
-            status_code = subprocess.check_output(
-                "dvc pull -r s3remote", shell=True, stderr=subprocess.STDOUT, timeout=60)
-        except Exception as e:
-            output = str(e.output)
-            print(output)
-            print('We got an error, sleeping')
-            sleep(20)
-    else:
-        print(f'No change of directory, running dvc process, curr working dir {os.getcwd()}')
-
-        try:
-            status_code = subprocess.check_output(
-                "dvc pull -r s3remote", shell=True, stderr=subprocess.STDOUT, timeout=60)
-        except Exception as e:
-            output = str(e.output)
-            print(output)
-            print('We got an error, sleeping')
-            sleep(20)
-        # print(f'Lock info {lock}, lock type {type(lock)}')
-
-        # status_code = os.system("dvc pull -r s3remote", )
-
-    # if status_code != 0:
-    #     print(type(status_code), status_code)
-    #     print(f'Wokring directory: {os.getcwd()}')
-    #     print('Error trying to pull the data, trying again')
-    #     time.sleep(10)
-    # print(f'Std errors: {dvc_output.stderr}')
-    # print(f'Error code: {dvc_output.returncode}')
-    # print(f'ST output: {dvc_output.stdout}')
-    # exit("dvc pull failed")
-
-    # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
+    try:
+        status_code = subprocess.check_output(
+            "dvc pull -r s3remote", shell=True, stderr=subprocess.STDOUT, timeout=60)
+    except Exception as e:
+        output = str(e.output)
+        print(output)
+        print('We got an expected error, skipping')
 
 abs_path = os.path.abspath(os.path.dirname(__file__))
 model_dir = os.path.join(abs_path, 'model')
