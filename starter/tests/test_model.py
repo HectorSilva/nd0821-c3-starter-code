@@ -1,3 +1,4 @@
+import os
 from unittest import TestCase
 
 import numpy as np
@@ -15,7 +16,8 @@ from starter.train_model import get_artifact, get_data, train_split
 class ModelTest(TestCase):
 
     def _setup(self):
-        model_dir = '../model'
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        model_dir = os.path.join(abs_path, '../model')
         model = get_artifact(model_dir, 'trained_model.sav')
         encoder = get_artifact(model_dir, 'onehot_encoder.sav')
         lb = get_artifact(model_dir, 'lb.sav')

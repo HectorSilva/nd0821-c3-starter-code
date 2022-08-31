@@ -6,10 +6,13 @@ Creates all the basic files:
 
 and saves them in the defined directory (model)
 """
+import os
+
 import starter.train_model as tm
 
 if __name__ == '__main__':
-    model_dir = 'model'
+    abs_path = os.path.abspath(os.path.dirname(__file__))
+    model_dir = os.path.join(abs_path, 'model')
     model_filename = 'trained_model.sav'
     onehot_encoder_filename = 'onehot_encoder.sav'
     lb_filename = 'lb.sav'
