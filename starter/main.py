@@ -15,6 +15,10 @@ from starter.starter.train_model import get_artifact
 
 app = FastAPI()
 
+if os.getcwd() != 'starter':
+    os.chdir('starter')
+    print(f'Changed to {os.getcwd()} directory')
+
 
 def list_files(startpath):
     for root, dirs, files in os.walk(startpath):
@@ -27,11 +31,11 @@ def list_files(startpath):
 
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
-    # os.system("dvc config core.no_scm true")
+    os.system("dvc config core.no_scm true")
     os.system("dvc config core.hardlink_lock true")
 
     print('************** BEGINNING OF LISTING FILES *****************')
-    list_files('.dvc')
+    list_files(os.getcwd())
     print('************** END OF LISTING FILES ***********************')
 
     if os.path.exists(".dvc/tmp/lock"):
