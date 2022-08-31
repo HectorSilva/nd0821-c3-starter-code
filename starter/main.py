@@ -31,8 +31,12 @@ list_files(os.getcwd())
 print('************** END OF LISTING FILES ***********************')
 
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
-    os.system("dvc config core.no_scm true")
+    # os.system("dvc config core.no_scm true")
     os.system("dvc config core.hardlink_lock true")
+
+    print('************** BEGINNING OF LISTING FILES *****************')
+    list_files(os.getcwd())
+    print('************** END OF LISTING FILES ***********************')
 
     if os.path.exists(".dvc/tmp/lock"):
         print('The lock file has been deleted')
