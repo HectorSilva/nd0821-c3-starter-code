@@ -1,7 +1,6 @@
 # Put the code for your API here.
 import os
 import subprocess
-import time
 
 import pandas as pd
 import uvicorn
@@ -56,26 +55,26 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
         os.chdir('starter')
         print(f'Changed to {os.getcwd()} directory')
         status_code = subprocess.call(
-            ["dvc", "pull", "-r", "s3remote"], timeout=60)
+            ["dvc", "pull", "-r", "-q", "s3remote"], timeout=60)
     else:
         print(f'No change of directory, running dvc process, curr working dir {os.getcwd()}')
         status_code = subprocess.call(
-            ["dvc", "pull", "-r", "s3remote"], timeout=60)
+            ["dvc", "pull", "-r", "-q", "s3remote"], timeout=60)
         # print(f'Lock info {lock}, lock type {type(lock)}')
 
         # status_code = os.system("dvc pull -r s3remote", )
 
-        if status_code != 0:
-            print(type(status_code), status_code)
-            print(f'Wokring directory: {os.getcwd()}')
-            print('Error trying to pull the data, trying again')
-            time.sleep(10)
-            # print(f'Std errors: {dvc_output.stderr}')
-            # print(f'Error code: {dvc_output.returncode}')
-            # print(f'ST output: {dvc_output.stdout}')
-            # exit("dvc pull failed")
+    # if status_code != 0:
+    #     print(type(status_code), status_code)
+    #     print(f'Wokring directory: {os.getcwd()}')
+    #     print('Error trying to pull the data, trying again')
+    #     time.sleep(10)
+    # print(f'Std errors: {dvc_output.stderr}')
+    # print(f'Error code: {dvc_output.returncode}')
+    # print(f'ST output: {dvc_output.stdout}')
+    # exit("dvc pull failed")
 
-        # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
+    # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
 
 abs_path = os.path.abspath(os.path.dirname(__file__))
 model_dir = os.path.join(abs_path, 'model')
