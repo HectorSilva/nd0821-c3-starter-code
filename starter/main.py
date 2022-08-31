@@ -1,6 +1,7 @@
 # Put the code for your API here.
 import os
 import subprocess
+from time import sleep
 
 import pandas as pd
 import uvicorn
@@ -68,12 +69,25 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     if 'starter' not in os.getcwd() and os.path.isdir('starter'):
         os.chdir('starter')
         print(f'Changed to {os.getcwd()} directory')
-        status_code = subprocess.call(
-            ["dvc", "pull", "-r", "s3remote"], timeout=60)
+        try:
+            status_code = subprocess.check_output(
+                "dvc pull -r s3remote", shell=True, stderr=subprocess.STDOUT, timeout=60)
+        except Exception as e:
+            output = str(e.output)
+            print(output)
+            print('We got an error, sleeping')
+            sleep(20)
     else:
         print(f'No change of directory, running dvc process, curr working dir {os.getcwd()}')
-        status_code = subprocess.call(
-            ["dvc", "pull", "-r", "s3remote"], timeout=60)
+
+        try:
+            status_code = subprocess.check_output(
+                "dvc pull -r s3remote", shell=True, stderr=subprocess.STDOUT, timeout=60)
+        except Exception as e:
+            output = str(e.output)
+            print(output)
+            print('We got an error, sleeping')
+            sleep(20)
         # print(f'Lock info {lock}, lock type {type(lock)}')
 
         # status_code = os.system("dvc pull -r s3remote", )
