@@ -53,7 +53,9 @@ def list_files(startpath):
             print('{}{}'.format(subindent, f))
 
 
+print('************** BEGINNING OF LISTING FILES *****************')
 list_files(os.getcwd())
+print('************** END OF LISTING FILES ***********************')
 abs_path = os.path.abspath(os.path.dirname(__file__))
 model_dir = pd.read_csv(os.path.join(abs_path, 'model'))
 model = get_artifact(model_dir, 'trained_model.sav')
