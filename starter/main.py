@@ -55,11 +55,11 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
         os.chdir('starter')
         print(f'Changed to {os.getcwd()} directory')
         status_code = subprocess.call(
-            ["dvc", "pull", "-r", "-q", "s3remote"], timeout=60)
+            ["dvc", "pull", "-q", "-r", "s3remote"], timeout=60)
     else:
         print(f'No change of directory, running dvc process, curr working dir {os.getcwd()}')
         status_code = subprocess.call(
-            ["dvc", "pull", "-r", "-q", "s3remote"], timeout=60)
+            ["dvc", "pull", "-q", "-r", "s3remote"], timeout=60)
         # print(f'Lock info {lock}, lock type {type(lock)}')
 
         # status_code = os.system("dvc pull -r s3remote", )
