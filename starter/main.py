@@ -32,21 +32,28 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
 
     print('************** BEGINNING OF LISTING FILES *****************')
     list_files('.dvc')
-    list_files('.apt')
     print('************** END OF LISTING FILES ***********************')
 
     if os.path.exists(".dvc/tmp/lock"):
         print('The lock file has been deleted')
         lock = os.system('rm -r .dvc .dvc/tmp/lock')
+    else:
+        print('Lock not found')
+
+    status_code = -1
 
     if os.getcwd() != 'starter':
         os.chdir('starter')
-
+        print(f'Changed to {os.getcwd()} directory')
+        status_code = subprocess.call(
+            ["dvc", "pull", "-vvv"], timeout=60)
+    else:
+        print(f'No change of directory, running dvc process, curr working dir {os.getcwd()}')
+        status_code = subprocess.call(
+            ["dvc", "pull", "-vvv"], timeout=60)
     # print(f'Lock info {lock}, lock type {type(lock)}')
 
     # status_code = os.system("dvc pull -r s3remote", )
-    status_code = subprocess.call(
-        ["dvc", "pull", "-vvv"], timeout=60)
 
     if status_code != 0:
         print(type(status_code), status_code)
