@@ -18,37 +18,37 @@ app = FastAPI()
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     os.system("dvc config core.hardlink_lock true")
-    time.sleep(60)
+
     if os.getcwd() != 'starter':
         os.chdir('starter')
     # lock = os.system('rm -r .dvc .dvc/tmp/lock')
     # print(f'Lock info {lock}, lock type {type(lock)}')
 
-    try:
-        status_code = os.system("dvc pull -r s3remote")
-        if status_code != 0:
-            print(type(status_code), status_code)
-            print(f'Wokring directory: {os.getcwd()}')
-            print(f'LS: {os.listdir()}')
-    except Exception as e:
-        print(f'Error {e}')
+    # status_code = os.system("dvc pull -r s3remote", )
+    dvc_output = subprocess.Popen(
+        ["dvc", "pull"])
+    dvc_output.wait(20)
+    status_code = dvc_output.returncode
+    if status_code != 0:
+        print(type(status_code), status_code)
+        print(f'Wokring directory: {os.getcwd()}')
         print('Error trying to pull the data, trying again')
-        dvc_output = subprocess.run(
-            ["dvc", "pull"], capture_output=True, text=True)
+
         print(f'Std errors: {dvc_output.stderr}')
         print(f'Error code: {dvc_output.returncode}')
         print(f'ST output: {dvc_output.stdout}')
         if dvc_output.returncode != 0:
             exit("dvc pull failed")
+    time.sleep(10)
     # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
 
 
 def list_files(startpath):
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
-        indent = ' ' * 4 * (level)
+        indent = '-' * 4 * (level)
         print('{}{}/'.format(indent, os.path.basename(root)))
-        subindent = ' ' * 4 * (level + 1)
+        subindent = '-' * 4 * (level + 1)
         for f in files:
             print('{}{}'.format(subindent, f))
 
