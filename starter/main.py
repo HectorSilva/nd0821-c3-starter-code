@@ -15,7 +15,7 @@ from starter.starter.train_model import get_artifact
 app = FastAPI()
 
 
-def list_files(startpath, pattern=None):
+def list_files(startpath, pattern=None, delete=False):
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
         indent = '-' * 4 * (level)
@@ -24,7 +24,13 @@ def list_files(startpath, pattern=None):
         for f in files:
             if pattern is not None:
                 if pattern in f:
-                    print('{}{}'.format(subindent, f))
+                    if delete:
+                        print('{}{}-----> TO DELETE'.format(subindent, f))
+                        os.remove(os.path.join(root, f))
+                        print(f'{subindent}{f} --> deleted')
+                    else:
+                        print('{}{}'.format(subindent, f))
+
             else:
                 print('{}{}'.format(subindent, f))
 
