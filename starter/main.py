@@ -25,21 +25,20 @@ if "DYNO" in os.environ and os.path.isdir(".dvc"):
     # print(f'Lock info {lock}, lock type {type(lock)}')
 
     # status_code = os.system("dvc pull -r s3remote", )
-    dvc_output = subprocess.Popen(
-        ["dvc", "pull"])
-    dvc_output.wait(20)
-    status_code = dvc_output.returncode
+    status_code = subprocess.call(
+        ["dvc", "pull"], timeout=60)
+
     if status_code != 0:
         print(type(status_code), status_code)
         print(f'Wokring directory: {os.getcwd()}')
         print('Error trying to pull the data, trying again')
 
-        print(f'Std errors: {dvc_output.stderr}')
-        print(f'Error code: {dvc_output.returncode}')
-        print(f'ST output: {dvc_output.stdout}')
-        if dvc_output.returncode != 0:
-            exit("dvc pull failed")
-    time.sleep(10)
+        # print(f'Std errors: {dvc_output.stderr}')
+        # print(f'Error code: {dvc_output.returncode}')
+        # print(f'ST output: {dvc_output.stdout}')
+        if status_code != 0:
+            # exit("dvc pull failed")
+            time.sleep(10)
     # os.system("rm -r .dvc ../.apt/usr/lib/dvc")
 
 
