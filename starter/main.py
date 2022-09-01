@@ -8,12 +8,6 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from pydantic.fields import Field
 
-if 'starter' not in os.getcwd():
-    os.chdir('starter')
-    print(f'Changed to {os.getcwd()} directory')
-else:
-    print('Already in starter directory')
-
 from .starter.constants import CAT_FEATURES
 from .starter.ml.data import process_data
 from .starter.ml.model import inference
@@ -24,6 +18,12 @@ app = FastAPI()
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     os.system("dvc config core.hardlink_lock true")
+
+    if 'starter' not in os.getcwd():
+        os.chdir('starter')
+        print(f'Changed to {os.getcwd()} directory')
+    else:
+        print('Already in starter directory')
 
     try:
         status_code = subprocess.check_output(
