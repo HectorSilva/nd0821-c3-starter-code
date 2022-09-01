@@ -8,10 +8,10 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from pydantic.fields import Field
 
-from .starter.constants import CAT_FEATURES
-from .starter.ml.data import process_data
-from .starter.ml.model import inference
-from .starter.train_model import get_artifact
+from starter.constants import CAT_FEATURES
+from starter.ml.data import process_data
+from starter.ml.model import inference
+from starter.train_model import get_artifact
 
 app = FastAPI()
 
