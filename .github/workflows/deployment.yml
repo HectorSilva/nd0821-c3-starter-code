@@ -3,7 +3,11 @@ name: API Deployment workflow
 # Controls when the action will run.
 on:
   workflow_dispatch:
-  push:
+  push: 
+    branches:
+      - "main"
+      - "master"
+      - "dev"
 
 jobs:
   test-rest-api:
