@@ -95,7 +95,7 @@ def save_artifact(artifact, model_dir: str, file_name: str):
     :param file_name:str: Specify the name of the artifact file
     :return: A dictionary with the following keys:
     """
-    with open(f'{abs_path}/{model_dir}/{file_name}', 'wb') as file:
+    with open(f'{model_dir}/{file_name}', 'wb') as file:
         pickle.dump(artifact, file)
 
 

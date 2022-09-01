@@ -5,8 +5,8 @@ from unittest import TestCase
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
+from sklearn.svm import SVC
 
 CURR_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(CURR_DIR + '/../../')
@@ -93,6 +93,6 @@ class ModelTest(TestCase):
 
     def test_get_artifact(self):
         model, encoder, lb = self._setup()
-        self.assertEqual(type(model), RandomForestClassifier)
+        self.assertEqual(type(model), SVC)
         self.assertEqual(type(encoder), OneHotEncoder)
         self.assertEqual(type(lb), LabelBinarizer)
