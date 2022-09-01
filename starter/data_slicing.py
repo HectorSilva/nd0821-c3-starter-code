@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 from sklearn.metrics import precision_recall_curve, f1_score, recall_score
 
@@ -54,8 +56,8 @@ if __name__ == "__main__":
         'Separated',
         'Widowed'
     ]
-
-    model_dir = '../model'
+    abs_path = os.path.abspath(os.path.dirname(__file__))
+    model_dir = os.path.join(abs_path, 'model')
     model = get_artifact(model_dir, 'trained_model.sav')
     encoder = get_artifact(model_dir, 'onehot_encoder.sav')
     lb = get_artifact(model_dir, 'lb.sav')

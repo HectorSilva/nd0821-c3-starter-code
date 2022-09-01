@@ -1,10 +1,15 @@
+import os
+import sys
 from unittest import TestCase
 
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
+from sklearn.svm import SVC
+
+CURR_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(CURR_DIR + '/../../')
 
 from starter.constants import CAT_FEATURES
 from starter.ml.data import process_data
@@ -15,7 +20,8 @@ from starter.train_model import get_artifact, get_data, train_split
 class ModelTest(TestCase):
 
     def _setup(self):
-        model_dir = '../model'
+        abs_path = os.path.abspath(os.path.dirname(__file__))
+        model_dir = os.path.join(abs_path, '../model')
         model = get_artifact(model_dir, 'trained_model.sav')
         encoder = get_artifact(model_dir, 'onehot_encoder.sav')
         lb = get_artifact(model_dir, 'lb.sav')
@@ -87,6 +93,6 @@ class ModelTest(TestCase):
 
     def test_get_artifact(self):
         model, encoder, lb = self._setup()
-        self.assertEqual(type(model), RandomForestClassifier)
+        self.assertEqual(type(model), SVC)
         self.assertEqual(type(encoder), OneHotEncoder)
         self.assertEqual(type(lb), LabelBinarizer)

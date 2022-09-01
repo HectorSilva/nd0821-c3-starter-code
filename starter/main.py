@@ -1,5 +1,7 @@
 # Put the code for your API here.
 import os
+import subprocess
+import sys
 
 import pandas as pd
 import uvicorn
@@ -7,20 +9,36 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from pydantic.fields import Field
 
+CURR_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(CURR_DIR + '/../')
+
 from starter.constants import CAT_FEATURES
 from starter.ml.data import process_data
 from starter.ml.model import inference
 from starter.train_model import get_artifact
 
-if "DYNO" in os.environ and os.path.isdir(".dvc"):
-    os.system("dvc config core.no_scm true")
-    if os.system("dvc pull") != 0:
-        exit("dvc pull failed")
-    os.system("rm -r .dvc .apt/usr/lib/dvc")
-
 app = FastAPI()
 
-model_dir = '../model'
+if "DYNO" in os.environ and os.path.isdir(".dvc"):
+    os.system("dvc config core.no_scm true")
+    os.system("dvc config core.hardlink_lock true")
+
+    if 'starter' not in os.getcwd():
+        os.chdir('starter')
+        print(f'Changed to {os.getcwd()} directory')
+    else:
+        print('Already in starter directory')
+
+    try:
+        status_code = subprocess.check_output(
+            "dvc pull -r s3remote", shell=True, stderr=subprocess.STDOUT, timeout=60)
+    except Exception as e:
+        output = str(e.output)
+        print(output)
+        print('We got an expected error, skipping')
+
+abs_path = os.path.abspath(os.path.dirname(__file__))
+model_dir = os.path.join(abs_path, 'model')
 model = get_artifact(model_dir, 'trained_model.sav')
 encoder = get_artifact(model_dir, 'onehot_encoder.sav')
 lb = get_artifact(model_dir, 'lb.sav')
@@ -74,4 +92,4 @@ async def get_inference(data: Person):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
