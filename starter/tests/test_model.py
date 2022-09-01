@@ -11,10 +11,10 @@ from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 CURR_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(CURR_DIR + '/../../')
 
-from starter.starter.constants import CAT_FEATURES
-from starter.starter.ml.data import process_data
-from starter.starter.ml.model import inference
-from starter.starter.train_model import get_artifact, get_data, train_split
+from starter.constants import CAT_FEATURES
+from starter.ml.data import process_data
+from starter.ml.model import inference
+from starter.train_model import get_artifact, get_data, train_split
 
 
 class ModelTest(TestCase):

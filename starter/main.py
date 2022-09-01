@@ -1,6 +1,7 @@
 # Put the code for your API here.
 import os
 import subprocess
+import sys
 
 import pandas as pd
 import uvicorn
@@ -8,10 +9,13 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from pydantic.fields import Field
 
-from .starter.constants import CAT_FEATURES
-from .starter.ml.data import process_data
-from .starter.ml.model import inference
-from .starter.train_model import get_artifact
+CURR_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(CURR_DIR + '/../')
+
+from starter.constants import CAT_FEATURES
+from starter.ml.data import process_data
+from starter.ml.model import inference
+from starter.train_model import get_artifact
 
 app = FastAPI()
 
